@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+const createSocket = require("socket.io-client")
+const yargs = require("yargs")
+const argv = yargs.argv
+const port = process.env.SERVER_PORT || 9500
+
+const socket = createSocket(`http://localhost:${port}/`)
+
+socket.on("connect", () => {
+  console.log(`Channel: ${argv.channel}`)
+  console.log(`Message: ${argv.message}`)
+
+  socket.emit(argv.channel, argv.message)
+  socket.disconnect()
+})
